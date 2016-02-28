@@ -34,12 +34,12 @@ public class HeaderPacketDecoder extends ByteToMessageDecoder {
             this.lastReadLength = 0;
         }
 
-        if (in.readableBytes() < 4) {
-            return null;
-        }
-
         // read head
         if (this.h == null) {
+            if (in.readableBytes() < 4) {
+                return null;
+            }
+
             Header header = Header.of(in);
 
             if (!header.hasBody()) {
@@ -65,6 +65,7 @@ public class HeaderPacketDecoder extends ByteToMessageDecoder {
                 throw new RpcRuntimeException("body length exceeded with size of " + len);
             }
             header.setBodyLength(len);
+            bodyLength = len;
         }
 
         if (bodyLength > in.readableBytes()) {
