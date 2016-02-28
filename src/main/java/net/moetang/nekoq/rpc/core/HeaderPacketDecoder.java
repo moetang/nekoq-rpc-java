@@ -12,8 +12,13 @@ import java.util.List;
  * Created by sunhao on 16-2-28.
  */
 public class HeaderPacketDecoder extends ByteToMessageDecoder {
+    private final int maxBodySizeLimit;
     private Header h;
     private int lastReadLength = 0;
+
+    public HeaderPacketDecoder(int maxBodySizeLimit) {
+        this.maxBodySizeLimit = maxBodySizeLimit;
+    }
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
@@ -55,6 +60,9 @@ public class HeaderPacketDecoder extends ByteToMessageDecoder {
             int len = in.readInt();
             if (len <= 0) {
                 throw new RpcRuntimeException("body length should > 0, but got " + len);
+            }
+            if (len > this.maxBodySizeLimit) {
+                throw new RpcRuntimeException("body length exceeded with size of " + len);
             }
             header.setBodyLength(len);
         }
