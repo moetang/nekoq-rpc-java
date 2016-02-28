@@ -46,7 +46,16 @@ public class RpcPacketDecoder extends MessageToMessageDecoder<Header> {
     }
 
     private Object decodeRpcResp(Header msg) {
-        return null;//TODO
+        RpcResp resp = new RpcResp();
+        ByteBuf data = msg.getBodyData();
+        data = data.order(ByteOrder.BIG_ENDIAN);
+
+        int reqId = data.readInt();
+        resp.setReqId(reqId);
+        int resultType = data.readInt();
+        resp.setResultType(resultType);
+        resp.setResult(Utils.readBytes32BE(data, PacketConstants.MAX_LENGTH));
+        return resp;
     }
 
     private Object decodeRpcReq(Header msg) {
