@@ -1,6 +1,7 @@
 package net.moetang.nekoq.rpc.core;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import net.moetang.nekoq.rpc.RpcRuntimeException;
@@ -12,6 +13,7 @@ import java.util.List;
 /**
  * Created by sunhao on 16-2-28.
  */
+@ChannelHandler.Sharable
 public class RpcPacketDecoder extends MessageToMessageDecoder<Header> {
     @Override
     protected void decode(ChannelHandlerContext ctx, Header msg, List<Object> out) throws Exception {

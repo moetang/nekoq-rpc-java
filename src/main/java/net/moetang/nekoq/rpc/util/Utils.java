@@ -25,4 +25,12 @@ public class Utils {
         buf.readBytes(tmp);
         return tmp;
     }
+
+    public static void writeIntBE(ByteBuf buf, int i) {
+        byte b1 = (byte) (i >> 24);
+        byte b2 = (byte) (i >> 16);
+        byte b3 = (byte) (i >> 8);
+        byte b4 = (byte) i;
+        buf.writeByte(b1).writeByte(b2).writeByte(b3).writeByte(b4);
+    }
 }

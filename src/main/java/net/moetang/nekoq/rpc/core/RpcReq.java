@@ -1,5 +1,7 @@
 package net.moetang.nekoq.rpc.core;
 
+import io.netty.buffer.ByteBuf;
+
 /**
  * Created by sunhao on 16-2-28.
  */
@@ -48,5 +50,10 @@ public class RpcReq implements IPacket {
 
     public void setParamData(byte[] paramData) {
         this.paramData = paramData;
+    }
+
+    public int writeTo(ByteBuf byteBuf) {
+        //TODO
+        return -1;
     }
 }

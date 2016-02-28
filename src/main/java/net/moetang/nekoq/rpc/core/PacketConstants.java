@@ -7,6 +7,9 @@ public class PacketConstants {
     // max length
     public static final int MAX_LENGTH = 64 * 1024;
 
+    // version
+    public static final int VERSION_1 = 0x40;
+
     // header options:
     public static final int OPTION_LENGTH = 1 << 0;
 

@@ -5,7 +5,7 @@ import io.netty.buffer.ByteBuf;
 /**
  * Created by sunhao on 16-2-28.
  */
-public class Header implements IPacket {
+public class Header {
 
     private int version;
     private int packetType;
@@ -29,6 +29,14 @@ public class Header implements IPacket {
         b = byteBuf.readByte();
         header.rest = b & 0xff;
         return header;
+    }
+
+    public static void writeTo(ByteBuf byteBuf, IPacket packet, int type, int subType, int option) {
+        byteBuf.writeByte(PacketConstants.VERSION_1 | type);
+        byteBuf.writeByte(subType);
+        byteBuf.writeByte(option);
+        byteBuf.writeByte(0);
+        packet.writeTo(byteBuf);
     }
 
     int getBodyLength() {
