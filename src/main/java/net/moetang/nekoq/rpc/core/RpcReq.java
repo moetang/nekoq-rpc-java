@@ -1,6 +1,8 @@
 package net.moetang.nekoq.rpc.core;
 
 import io.netty.buffer.ByteBuf;
+import net.moetang.nekoq.rpc.RpcRuntimeException;
+import net.moetang.nekoq.rpc.util.Utils;
 
 /**
  * Created by sunhao on 16-2-28.
@@ -53,7 +55,26 @@ public class RpcReq implements IPacket {
     }
 
     public int writeTo(ByteBuf byteBuf) {
-        //TODO
+        int startWriteIdx = byteBuf.writerIndex();
+        Utils.writeIntBE(byteBuf, 0);
+        if (this.traceId != null && this.traceId.length == 64) {
+            byteBuf.writeBytes(this.traceId);
+        } else {
+            throw new RpcRuntimeException("traceId is not 64bytes");
+        }
+        if (this.rpcId != null && this.rpcId.length == 32) {
+            byteBuf.writeBytes(this.rpcId);
+        } else {
+            throw new RpcRuntimeException("rpcId is not 32 bytes");
+        }
+        Utils.writeIntBE(byteBuf, this.reqId);
+        Utils.writeBytes16BE(byteBuf, this.serviceName.getBytes());
+        if (this.paramData == null) {
+            this.paramData = new byte[0];
+        }
+        Utils.writeBytes32BE(byteBuf, this.paramData);
+        int endWriteIdx = byteBuf.writerIndex();
+        Utils.setIntBE(byteBuf, startWriteIdx, endWriteIdx - startWriteIdx - 4);
         return -1;
     }
 }
