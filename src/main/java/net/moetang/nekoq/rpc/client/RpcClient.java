@@ -84,6 +84,8 @@ public class RpcClient<T> {
                     } else if (resp.getResultType() == 0) {
                         if (method.getReturnType() == void.class || method.getReturnType() == Void.class) {
                             return null;
+                        } else if (resp.getResult() == null) {
+                            return null;
                         } else {
                             return mapper.readValue(resp.getResult(), method.getReturnType());
                         }
@@ -113,6 +115,8 @@ public class RpcClient<T> {
                         }
                     } else if (resp.getResultType() == 0) {
                         if (method.getReturnType() == void.class || method.getReturnType() == Void.class) {
+                            return null;
+                        } else if (resp.getResult() == null) {
                             return null;
                         } else {
                             return mapper.readValue(resp.getResult(), method.getReturnType());
