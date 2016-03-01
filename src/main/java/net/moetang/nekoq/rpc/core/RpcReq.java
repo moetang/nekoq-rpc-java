@@ -8,6 +8,8 @@ import net.moetang.nekoq.rpc.util.Utils;
  * Created by sunhao on 16-2-28.
  */
 public class RpcReq implements IPacket {
+    private static final byte[] EMPTY_DATA = new byte[0];
+
     private byte[] traceId;
     private byte[] rpcId;
     private int reqId;
@@ -70,7 +72,7 @@ public class RpcReq implements IPacket {
         Utils.writeIntBE(byteBuf, this.reqId);
         Utils.writeBytes16BE(byteBuf, this.serviceName.getBytes());
         if (this.paramData == null) {
-            this.paramData = new byte[0];
+            this.paramData = EMPTY_DATA;
         }
         Utils.writeBytes32BE(byteBuf, this.paramData);
         int endWriteIdx = byteBuf.writerIndex();
