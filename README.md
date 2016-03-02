@@ -22,8 +22,12 @@ time: 10275 , qps: 19464.7201946472
 
 ## Attention:
 
+####rules of using rpc:
+
 1. interface without inheritance
 2. method interface should be: 1 or 2 params with last param type of AppInfo
 3. no or 1 return value
 4. method name should not be override
 5. bean must contain a default constructor & getters/setters for every field
+6. should not use generics in params or result
+7. should not use recursive references in params/result
