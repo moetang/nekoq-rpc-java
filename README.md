@@ -3,6 +3,52 @@ nekoq-rpc-java server/client
 
 ## Usage Example:
 
+#####Service Interface
+
+```
+public interface IServiceDemo {
+    Pong ping(AppInfo appInfo);
+}
+```
+
+#####Service Impl
+
+```
+public class ServiceDemoImpl implements IServiceDemo {
+    public Pong ping(AppInfo appInfo) {
+        Pong pong = new Pong();
+        pong.setMsg("pong");
+        return pong;
+    }
+}
+```
+
+#####RpcServer
+
+```
+public class RpcServerTest {
+    @Test
+    public void testServerUsage() throws InterruptedException {
+        IServiceDemo serviceDemo = new ServiceDemoImpl();
+        RpcServer.create(new InetSocketAddress("127.0.0.1", 14357), serviceDemo, IServiceDemo.class);
+        TimeUnit.SECONDS.sleep(10000000);
+    }
+}
+```
+
+#####RpcClient
+
+```
+public class RpcClientTest {
+    @Test
+    public void testRpcClientUsage() {
+        RpcClient<IServiceDemo> rpcClient = RpcClient.create(new InetSocketAddress("127.0.0.1", 14357), IServiceDemo.class);
+        IServiceDemo serviceDemo = rpcClient.getInstance();
+        System.out.println(serviceDemo.ping(new AppInfo()));
+    }
+}
+```
+
 ## Benchmark:
 
 env: Core i5-2520M / 16G DDR3 / Ubuntu 15.10 with GNU/Linux 4.2.0-30-generic
